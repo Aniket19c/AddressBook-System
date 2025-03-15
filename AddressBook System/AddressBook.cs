@@ -26,14 +26,38 @@ namespace AddressBookSystem
             Console.Write("Enter State: ");
             newContact.State = Console.ReadLine();
 
-            Console.Write("Enter ZIP Code: ");
-            newContact.Zip = Console.ReadLine();
+            while (true)
+            {
+                Console.Write("Enter ZIP Code (5 digits or ZIP+4 format): ");
+                string zipInput = Console.ReadLine();
+                if (Contact.IsValidZip(zipInput))
+                {
+                    newContact.Zip = zipInput;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid ZIP Code! Please enter a valid format (e.g., 12345 or 12345-6789).");
+                }
+            }
 
             Console.Write("Enter Phone Number: ");
             newContact.PhoneNumber = Console.ReadLine();
 
-            Console.Write("Enter Email: ");
-            newContact.Email = Console.ReadLine();
+            while (true)
+            {
+                Console.Write("Enter Email: ");
+                string emailInput = Console.ReadLine();
+                if (Contact.IsValidEmail(emailInput))
+                {
+                    newContact.Email = emailInput;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Email! Please enter a valid format (e.g., example@mail.com).");
+                }
+            }
 
             contacts.Add(newContact);
             Console.WriteLine("Contact added successfully!");

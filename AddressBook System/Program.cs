@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AddressBookSystem;
 
 namespace AddressBook_System
 {
@@ -11,6 +12,7 @@ namespace AddressBook_System
        public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Address Book System");
+            AddressBookMain.Run();
 
         }
     }

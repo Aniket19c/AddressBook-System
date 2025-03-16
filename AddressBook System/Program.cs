@@ -1,46 +1,46 @@
 ﻿using System;
-using AddressBookSystem;
 
-class Program
+namespace AddressBookSystem
 {
-    static void Main()
+    class Program
     {
-        AddressBook addressBook = new AddressBook();
-        bool exit = false;
-
-        while (!exit)
+        static void Main(string[] args)
         {
-            Console.WriteLine("\nAddress Book System");
-            Console.WriteLine("1. Add Contact");
-            Console.WriteLine("2. Edit Contact");
-            Console.WriteLine("3. Delete Contact");  
-            Console.WriteLine("4. Display Contacts");
-            Console.WriteLine("5. Exit");
-            Console.Write("Choose an option: ");
+            AddressBook addressBook = new AddressBook();
 
-            int choice = Convert.ToInt32(Console.ReadLine());
-
-            switch (choice)
+            while (true)
             {
-                case 1:
-                    addressBook.AddContact();
-                    break;
-                case 2:
-                    addressBook.EditContact();
-                    break;
-                case 3:
-                    addressBook.DeleteContact(); 
-                    break;
-                case 4:
-                    addressBook.DisplayContacts();
-                    break;
-                case 5:
-                    exit = true;
-                    Console.WriteLine("Exiting Address Book System.");
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice! Please enter again.");
-                    break;
+                Console.WriteLine("\nAddress Book Menu:");
+                Console.WriteLine("1. Add Contact");
+                Console.WriteLine("2. Display Contacts");
+                Console.WriteLine("3. Edit Contact");
+                Console.WriteLine("4. Delete Contact");
+                Console.WriteLine("5. Exit");
+                Console.Write("Enter your choice: ");
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        addressBook.AddContact();
+                        break;
+                    case "2":
+                        addressBook.DisplayContacts();
+                        break;
+                    case "3":
+                        addressBook.EditContact();
+                        break;
+                    case "4":
+                        addressBook.DeleteContact();
+                        break;
+                    case "5":
+                        Console.WriteLine("Exiting Address Book. Goodbye!");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
             }
         }
     }

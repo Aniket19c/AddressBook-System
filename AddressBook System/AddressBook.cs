@@ -9,56 +9,70 @@ namespace AddressBookSystem
 
         public void AddContact()
         {
-            Contact newContact = new Contact();
-
-            Console.Write("Enter First Name: ");
-            newContact.FirstName = Console.ReadLine();
-
-            Console.Write("Enter Last Name: ");
-            newContact.LastName = Console.ReadLine();
-
-            Console.Write("Enter Address: ");
-            newContact.Address = Console.ReadLine();
-
-            Console.Write("Enter City: ");
-            newContact.City = Console.ReadLine();
-
-            Console.Write("Enter State: ");
-            newContact.State = Console.ReadLine();
-
             while (true)
             {
-                Console.Write("Enter ZIP Code: ");
-                string zipInput = Console.ReadLine();
-                if (Contact.IsValidZip(zipInput))
+                Contact newContact = new Contact();
+
+                Console.Write("Enter First Name: ");
+                newContact.FirstName = Console.ReadLine();
+
+                Console.Write("Enter Last Name: ");
+                newContact.LastName = Console.ReadLine();
+
+                Console.Write("Enter Address: ");
+                newContact.Address = Console.ReadLine();
+
+                Console.Write("Enter City: ");
+                newContact.City = Console.ReadLine();
+
+                Console.Write("Enter State: ");
+                newContact.State = Console.ReadLine();
+
+                while (true)
                 {
-                    newContact.Zip = zipInput;
-                    break;
+                    Console.Write("Enter ZIP Code: ");
+                    string zipInput = Console.ReadLine();
+                    if (Contact.IsValidZip(zipInput))
+                    {
+                        newContact.Zip = zipInput;
+                        break;
+                    }
+                    Console.WriteLine("Invalid ZIP Code! Must be 5 digits or ZIP+4 format.");
                 }
-                Console.WriteLine("Invalid ZIP Code! Must be 5 digits or ZIP+4 format.");
-            }
 
-            Console.Write("Enter Phone Number: ");
-            newContact.PhoneNumber = Console.ReadLine();
+                Console.Write("Enter Phone Number: ");
+                newContact.PhoneNumber = Console.ReadLine();
 
-            while (true)
-            {
-                Console.Write("Enter Email: ");
-                string emailInput = Console.ReadLine();
-                if (Contact.IsValidEmail(emailInput))
+                while (true)
                 {
-                    newContact.Email = emailInput;
-                    break;
+                    Console.Write("Enter Email: ");
+                    string emailInput = Console.ReadLine();
+                    if (Contact.IsValidEmail(emailInput))
+                    {
+                        newContact.Email = emailInput;
+                        break;
+                    }
+                    Console.WriteLine("Invalid Email! Please enter a valid email format.");
                 }
-                Console.WriteLine("Invalid Email! Please enter a valid email format.");
-            }
 
-            contacts.Add(newContact);
-            Console.WriteLine("Contact added successfully!");
+                contacts.Add(newContact);
+                Console.WriteLine("Contact added successfully!");
+
+                Console.Write("\nDo you want to add another contact? (yes/no): ");
+                string choice = Console.ReadLine().ToLower();
+                if (choice != "yes") break;
+            }
         }
 
         public void DisplayContacts()
         {
+            if (contacts.Count == 0)
+            {
+                Console.WriteLine("No contacts available.");
+                return;
+            }
+
+            Console.WriteLine("\nAddress Book Contacts:");
             foreach (var contact in contacts)
             {
                 Console.WriteLine(contact);
@@ -67,11 +81,16 @@ namespace AddressBookSystem
 
         public void DeleteContact()
         {
-            Console.Write("Enter the first name of the contact to delete: ");
+            Console.Write("Enter the First Name of the contact to delete: ");
             string firstName = Console.ReadLine();
-            Contact contactToDelete = contacts.Find(c => c.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
 
-            if (contactToDelete != null) 
+            Console.Write("Enter the Last Name of the contact to delete: ");
+            string lastName = Console.ReadLine();
+
+            Contact contactToDelete = contacts.Find(c => c.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase) &&
+                                                         c.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
+
+            if (contactToDelete != null)
             {
                 contacts.Remove(contactToDelete);
                 Console.WriteLine("Contact deleted successfully!");
@@ -98,7 +117,7 @@ namespace AddressBookSystem
                 return;
             }
 
-            Console.WriteLine("Editing contact: " + contactToEdit);
+            Console.WriteLine($"Editing contact: {contactToEdit}");
 
             Console.Write("Enter new Address (press Enter to keep existing): ");
             string newAddress = Console.ReadLine();

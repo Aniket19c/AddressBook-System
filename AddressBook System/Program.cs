@@ -1,19 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AddressBookSystem;
 
-namespace AddressBook_System
+namespace AddressBookSystem
 {
-    public  class Program
+    class Program
     {
-       public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Address Book System");
-            AddressBookMain.Run();
+            AddressBook addressBook = new AddressBook();
 
+            while (true)
+            {
+                Console.WriteLine("\nAddress Book Menu:");
+                Console.WriteLine("1. Add Contact");
+                Console.WriteLine("2. Display Contacts");
+                Console.WriteLine("3. Exit");
+                Console.Write("Choose an option: ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        addressBook.AddContact();
+                        break;
+                    case "2":
+                        addressBook.DisplayContacts();
+                        break;
+                    case "3":
+                        Console.WriteLine("Exiting program...");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice, please try again.");
+                        break;
+                }
+            }
         }
     }
 }

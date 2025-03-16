@@ -9,9 +9,6 @@ namespace AddressBookSystem
         private Dictionary<string, List<Contact>> addressBooks = new Dictionary<string, List<Contact>>();
         private string currentAddressBook = null;
 
-        private Dictionary<string, List<Contact>> cityToContacts = new Dictionary<string, List<Contact>>();
-        private Dictionary<string, List<Contact>> stateToContacts = new Dictionary<string, List<Contact>>();
-
         public void AddAddressBook(string name)
         {
             if (!addressBooks.ContainsKey(name))
@@ -106,23 +103,7 @@ namespace AddressBookSystem
             }
             newContact.Email = emailInput;
 
-           
             addressBooks[currentAddressBook].Add(newContact);
-
-         
-            if (!cityToContacts.ContainsKey(newContact.City))
-            {
-                cityToContacts[newContact.City] = new List<Contact>();
-            }
-            cityToContacts[newContact.City].Add(newContact);
-
-       
-            if (!stateToContacts.ContainsKey(newContact.State))
-            {
-                stateToContacts[newContact.State] = new List<Contact>();
-            }
-            stateToContacts[newContact.State].Add(newContact);
-
             Console.WriteLine("Contact added successfully!");
         }
 
@@ -147,27 +128,55 @@ namespace AddressBookSystem
             }
         }
 
-        public void ViewPersonsByCityOrState()
+        public void ViewContactsByCity(string city)
         {
-            Console.Write("Enter City or State to search for persons: ");
-            string searchInput = Console.ReadLine();
+            var contacts = addressBooks.Values.SelectMany(contactsList => contactsList)
+                           .Where(c => c.City.Equals(city, StringComparison.OrdinalIgnoreCase))
+                           .ToList();
 
-            List<Contact> contactsInCity = cityToContacts.ContainsKey(searchInput) ? cityToContacts[searchInput] : new List<Contact>();
-            List<Contact> contactsInState = stateToContacts.ContainsKey(searchInput) ? stateToContacts[searchInput] : new List<Contact>();
-
-            HashSet<Contact> uniqueContacts = new HashSet<Contact>(contactsInCity.Concat(contactsInState));
-
-            if (uniqueContacts.Count == 0)
+            Console.WriteLine($"\nContacts in City '{city}':");
+            foreach (var contact in contacts)
             {
-                Console.WriteLine($"No persons found in City/State: {searchInput}");
+                Console.WriteLine(contact);
             }
-            else
+        }
+
+        public void ViewContactsByState(string state)
+        {
+            var contacts = addressBooks.Values.SelectMany(contactsList => contactsList)
+                           .Where(c => c.State.Equals(state, StringComparison.OrdinalIgnoreCase))
+                           .ToList();
+
+            Console.WriteLine($"\nContacts in State '{state}':");
+            foreach (var contact in contacts)
             {
-                Console.WriteLine($"Persons found in City/State '{searchInput}':");
-                foreach (var contact in uniqueContacts)
-                {
-                    Console.WriteLine(contact);
-                }
+                Console.WriteLine(contact);
+            }
+        }
+
+        public void CountContactsByCity()
+        {
+            var cityCounts = addressBooks.Values.SelectMany(contactsList => contactsList)
+                              .GroupBy(c => c.City)
+                              .ToDictionary(g => g.Key, g => g.Count());
+
+            Console.WriteLine("\nNumber of Contacts by City:");
+            foreach (var entry in cityCounts)
+            {
+                Console.WriteLine($"{entry.Key}: {entry.Value}");
+            }
+        }
+
+        public void CountContactsByState()
+        {
+            var stateCounts = addressBooks.Values.SelectMany(contactsList => contactsList)
+                               .GroupBy(c => c.State)
+                               .ToDictionary(g => g.Key, g => g.Count());
+
+            Console.WriteLine("\nNumber of Contacts by State:");
+            foreach (var entry in stateCounts)
+            {
+                Console.WriteLine($"{entry.Key}: {entry.Value}");
             }
         }
     }

@@ -65,6 +65,23 @@ namespace AddressBookSystem
             }
         }
 
+        public void DeleteContact()
+        {
+            Console.Write("Enter the first name of the contact to delete: ");
+            string firstName = Console.ReadLine();
+            Contact contactToDelete = contacts.Find(c => c.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
+
+            if (contactToDelete != null) 
+            {
+                contacts.Remove(contactToDelete);
+                Console.WriteLine("Contact deleted successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Contact not found!");
+            }
+        }
+
         public void EditContact()
         {
             Console.Write("Enter First Name of the contact to edit: ");

@@ -28,17 +28,14 @@ namespace AddressBookSystem
 
             while (true)
             {
-                Console.Write("Enter ZIP Code (5 digits or ZIP+4 format): ");
+                Console.Write("Enter ZIP Code: ");
                 string zipInput = Console.ReadLine();
                 if (Contact.IsValidZip(zipInput))
                 {
                     newContact.Zip = zipInput;
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("Invalid ZIP Code! Please enter a valid format (e.g., 12345 or 12345-6789).");
-                }
+                Console.WriteLine("Invalid ZIP Code! Must be 5 digits or ZIP+4 format.");
             }
 
             Console.Write("Enter Phone Number: ");
@@ -53,10 +50,7 @@ namespace AddressBookSystem
                     newContact.Email = emailInput;
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("Invalid Email! Please enter a valid format (e.g., example@mail.com).");
-                }
+                Console.WriteLine("Invalid Email! Please enter a valid email format.");
             }
 
             contacts.Add(newContact);
@@ -65,17 +59,71 @@ namespace AddressBookSystem
 
         public void DisplayContacts()
         {
-            if (contacts.Count == 0)
-            {
-                Console.WriteLine("No contacts found.");
-                return;
-            }
-
-            Console.WriteLine("\nAddress Book Contacts:");
             foreach (var contact in contacts)
             {
                 Console.WriteLine(contact);
             }
+        }
+
+        public void EditContact()
+        {
+            Console.Write("Enter First Name of the contact to edit: ");
+            string firstName = Console.ReadLine();
+            Console.Write("Enter Last Name of the contact to edit: ");
+            string lastName = Console.ReadLine();
+
+            Contact contactToEdit = contacts.Find(c => c.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase) &&
+                                                       c.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
+
+            if (contactToEdit == null)
+            {
+                Console.WriteLine("Contact not found!");
+                return;
+            }
+
+            Console.WriteLine("Editing contact: " + contactToEdit);
+
+            Console.Write("Enter new Address (press Enter to keep existing): ");
+            string newAddress = Console.ReadLine();
+            if (!string.IsNullOrEmpty(newAddress)) contactToEdit.Address = newAddress;
+
+            Console.Write("Enter new City (press Enter to keep existing): ");
+            string newCity = Console.ReadLine();
+            if (!string.IsNullOrEmpty(newCity)) contactToEdit.City = newCity;
+
+            Console.Write("Enter new State (press Enter to keep existing): ");
+            string newState = Console.ReadLine();
+            if (!string.IsNullOrEmpty(newState)) contactToEdit.State = newState;
+
+            while (true)
+            {
+                Console.Write("Enter new ZIP Code (press Enter to keep existing): ");
+                string newZip = Console.ReadLine();
+                if (string.IsNullOrEmpty(newZip) || Contact.IsValidZip(newZip))
+                {
+                    if (!string.IsNullOrEmpty(newZip)) contactToEdit.Zip = newZip;
+                    break;
+                }
+                Console.WriteLine("Invalid ZIP Code! Must be 5 digits or ZIP+4 format.");
+            }
+
+            Console.Write("Enter new Phone Number (press Enter to keep existing): ");
+            string newPhoneNumber = Console.ReadLine();
+            if (!string.IsNullOrEmpty(newPhoneNumber)) contactToEdit.PhoneNumber = newPhoneNumber;
+
+            while (true)
+            {
+                Console.Write("Enter new Email (press Enter to keep existing): ");
+                string newEmail = Console.ReadLine();
+                if (string.IsNullOrEmpty(newEmail) || Contact.IsValidEmail(newEmail))
+                {
+                    if (!string.IsNullOrEmpty(newEmail)) contactToEdit.Email = newEmail;
+                    break;
+                }
+                Console.WriteLine("Invalid Email! Please enter a valid email format.");
+            }
+
+            Console.WriteLine("Contact updated successfully!");
         }
     }
 }

@@ -5,161 +5,87 @@ namespace AddressBookSystem
 {
     class AddressBook
     {
-        private List<Contact> contacts = new List<Contact>();
+        private Dictionary<string, List<Contact>> addressBooks = new Dictionary<string, List<Contact>>();
+        private string currentAddressBook = null;
 
-        public void AddContact()
+       
+        public void AddAddressBook(string name)
         {
-            while (true)
+            if (!addressBooks.ContainsKey(name))
             {
-                Contact newContact = new Contact();
-
-                Console.Write("Enter First Name: ");
-                newContact.FirstName = Console.ReadLine();
-
-                Console.Write("Enter Last Name: ");
-                newContact.LastName = Console.ReadLine();
-
-                Console.Write("Enter Address: ");
-                newContact.Address = Console.ReadLine();
-
-                Console.Write("Enter City: ");
-                newContact.City = Console.ReadLine();
-
-                Console.Write("Enter State: ");
-                newContact.State = Console.ReadLine();
-
-                while (true)
-                {
-                    Console.Write("Enter ZIP Code: ");
-                    string zipInput = Console.ReadLine();
-                    if (Contact.IsValidZip(zipInput))
-                    {
-                        newContact.Zip = zipInput;
-                        break;
-                    }
-                    Console.WriteLine("Invalid ZIP Code! Must be 5 digits or ZIP+4 format.");
-                }
-
-                Console.Write("Enter Phone Number: ");
-                newContact.PhoneNumber = Console.ReadLine();
-
-                while (true)
-                {
-                    Console.Write("Enter Email: ");
-                    string emailInput = Console.ReadLine();
-                    if (Contact.IsValidEmail(emailInput))
-                    {
-                        newContact.Email = emailInput;
-                        break;
-                    }
-                    Console.WriteLine("Invalid Email! Please enter a valid email format.");
-                }
-
-                contacts.Add(newContact);
-                Console.WriteLine("Contact added successfully!");
-
-                Console.Write("\nDo you want to add another contact? (yes/no): ");
-                string choice = Console.ReadLine().ToLower();
-                if (choice != "yes") break;
-            }
-        }
-
-        public void DisplayContacts()
-        {
-            if (contacts.Count == 0)
-            {
-                Console.WriteLine("No contacts available.");
-                return;
-            }
-
-            Console.WriteLine("\nAddress Book Contacts:");
-            foreach (var contact in contacts)
-            {
-                Console.WriteLine(contact);
-            }
-        }
-
-        public void DeleteContact()
-        {
-            Console.Write("Enter the First Name of the contact to delete: ");
-            string firstName = Console.ReadLine();
-
-            Console.Write("Enter the Last Name of the contact to delete: ");
-            string lastName = Console.ReadLine();
-
-            Contact contactToDelete = contacts.Find(c => c.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase) &&
-                                                         c.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
-
-            if (contactToDelete != null)
-            {
-                contacts.Remove(contactToDelete);
-                Console.WriteLine("Contact deleted successfully!");
+                addressBooks[name] = new List<Contact>();
+                Console.WriteLine($"Address Book '{name}' created successfully!");
             }
             else
             {
-                Console.WriteLine("Contact not found!");
+                Console.WriteLine("An Address Book with this name already exists!");
             }
         }
 
-        public void EditContact()
+        public void SelectAddressBook(string name)
         {
-            Console.Write("Enter First Name of the contact to edit: ");
-            string firstName = Console.ReadLine();
-            Console.Write("Enter Last Name of the contact to edit: ");
-            string lastName = Console.ReadLine();
-
-            Contact contactToEdit = contacts.Find(c => c.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase) &&
-                                                       c.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
-
-            if (contactToEdit == null)
+            if (addressBooks.ContainsKey(name))
             {
-                Console.WriteLine("Contact not found!");
+                currentAddressBook = name;
+                Console.WriteLine($"Switched to Address Book '{name}'.");
+            }
+            else
+            {
+                Console.WriteLine("Address Book not found!");
+            }
+        }
+
+      
+        public void AddContact()
+        {
+            if (currentAddressBook == null)
+            {
+                Console.WriteLine("No Address Book selected! Please select an Address Book first.");
                 return;
             }
 
-            Console.WriteLine($"Editing contact: {contactToEdit}");
+            Contact newContact = new Contact();
+            Console.Write("Enter First Name: ");
+            newContact.FirstName = Console.ReadLine();
 
-            Console.Write("Enter new Address (press Enter to keep existing): ");
-            string newAddress = Console.ReadLine();
-            if (!string.IsNullOrEmpty(newAddress)) contactToEdit.Address = newAddress;
+            Console.Write("Enter Last Name: ");
+            newContact.LastName = Console.ReadLine();
 
-            Console.Write("Enter new City (press Enter to keep existing): ");
-            string newCity = Console.ReadLine();
-            if (!string.IsNullOrEmpty(newCity)) contactToEdit.City = newCity;
+            Console.Write("Enter Address: ");
+            newContact.Address = Console.ReadLine();
 
-            Console.Write("Enter new State (press Enter to keep existing): ");
-            string newState = Console.ReadLine();
-            if (!string.IsNullOrEmpty(newState)) contactToEdit.State = newState;
+            Console.Write("Enter City: ");
+            newContact.City = Console.ReadLine();
 
-            while (true)
+            Console.Write("Enter State: ");
+            newContact.State = Console.ReadLine();
+
+            Console.Write("Enter ZIP Code: ");
+            newContact.Zip = Console.ReadLine();
+
+            Console.Write("Enter Phone Number: ");
+            newContact.PhoneNumber = Console.ReadLine();
+
+            Console.Write("Enter Email: ");
+            newContact.Email = Console.ReadLine();
+
+            addressBooks[currentAddressBook].Add(newContact);
+            Console.WriteLine("Contact added successfully!");
+        }
+
+      
+        public void DisplayContacts()
+        {
+            if (currentAddressBook == null)
             {
-                Console.Write("Enter new ZIP Code (press Enter to keep existing): ");
-                string newZip = Console.ReadLine();
-                if (string.IsNullOrEmpty(newZip) || Contact.IsValidZip(newZip))
-                {
-                    if (!string.IsNullOrEmpty(newZip)) contactToEdit.Zip = newZip;
-                    break;
-                }
-                Console.WriteLine("Invalid ZIP Code! Must be 5 digits or ZIP+4 format.");
+                Console.WriteLine("No Address Book selected! Please select an Address Book first.");
+                return;
             }
 
-            Console.Write("Enter new Phone Number (press Enter to keep existing): ");
-            string newPhoneNumber = Console.ReadLine();
-            if (!string.IsNullOrEmpty(newPhoneNumber)) contactToEdit.PhoneNumber = newPhoneNumber;
-
-            while (true)
+            foreach (var contact in addressBooks[currentAddressBook])
             {
-                Console.Write("Enter new Email (press Enter to keep existing): ");
-                string newEmail = Console.ReadLine();
-                if (string.IsNullOrEmpty(newEmail) || Contact.IsValidEmail(newEmail))
-                {
-                    if (!string.IsNullOrEmpty(newEmail)) contactToEdit.Email = newEmail;
-                    break;
-                }
-                Console.WriteLine("Invalid Email! Please enter a valid email format.");
+                Console.WriteLine(contact);
             }
-
-            Console.WriteLine("Contact updated successfully!");
         }
     }
 }

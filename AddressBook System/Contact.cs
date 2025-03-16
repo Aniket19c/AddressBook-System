@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace AddressBookSystem
 {
@@ -17,6 +18,24 @@ namespace AddressBookSystem
         {
             return $"Name: {FirstName} {LastName}, Address: {Address}, {City}, {State}, {Zip}, Phone: {PhoneNumber}, Email: {Email}";
         }
+
+   
+        public override bool Equals(object obj)
+        {
+            if (obj is Contact contact)
+            {
+                return this.FirstName.Equals(contact.FirstName, StringComparison.OrdinalIgnoreCase) &&
+                       this.LastName.Equals(contact.LastName, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
+  
+        public override int GetHashCode()
+        {
+            return FirstName.ToLower().GetHashCode() ^ LastName.ToLower().GetHashCode();
+        }
+
         public static bool IsValidEmail(string email)
         {
             string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";

@@ -16,7 +16,7 @@ namespace AddressBookSystem
                 Console.WriteLine("2. Select an Address Book");
                 Console.WriteLine("3. Add a Contact");
                 Console.WriteLine("4. Display Contacts");
-                Console.WriteLine("5. Search Person by City or State");
+                Console.WriteLine("5. View Persons by City/State");
                 Console.WriteLine("6. Exit");
                 Console.Write("Enter your choice: ");
 
@@ -40,11 +40,7 @@ namespace AddressBookSystem
                         addressBookSystem.DisplayContacts();
                         break;
                     case "5":
-                        Console.Write("Enter City ");
-                        string city = Console.ReadLine();
-                        Console.Write("Enter State ");
-                        string state = Console.ReadLine();
-                        addressBookSystem.SearchByCityOrState(city, state);
+                        addressBookSystem.ViewPersonsByCityOrState();
                         break;
                     case "6":
                         exit = true;

@@ -9,7 +9,9 @@ namespace AddressBookSystem
         private Dictionary<string, List<Contact>> addressBooks = new Dictionary<string, List<Contact>>();
         private string currentAddressBook = null;
 
-       
+        private Dictionary<string, List<Contact>> cityToContacts = new Dictionary<string, List<Contact>>();
+        private Dictionary<string, List<Contact>> stateToContacts = new Dictionary<string, List<Contact>>();
+
         public void AddAddressBook(string name)
         {
             if (!addressBooks.ContainsKey(name))
@@ -22,7 +24,6 @@ namespace AddressBookSystem
                 Console.WriteLine("An Address Book with this name already exists!");
             }
         }
-
 
         public void SelectAddressBook(string name)
         {
@@ -37,7 +38,6 @@ namespace AddressBookSystem
             }
         }
 
-
         private bool IsDuplicateContact(string firstName, string lastName)
         {
             if (currentAddressBook == null || !addressBooks.ContainsKey(currentAddressBook))
@@ -50,7 +50,6 @@ namespace AddressBookSystem
                                    contact.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
         }
 
-       
         public void AddContact()
         {
             if (currentAddressBook == null)
@@ -107,9 +106,26 @@ namespace AddressBookSystem
             }
             newContact.Email = emailInput;
 
+           
             addressBooks[currentAddressBook].Add(newContact);
+
+         
+            if (!cityToContacts.ContainsKey(newContact.City))
+            {
+                cityToContacts[newContact.City] = new List<Contact>();
+            }
+            cityToContacts[newContact.City].Add(newContact);
+
+       
+            if (!stateToContacts.ContainsKey(newContact.State))
+            {
+                stateToContacts[newContact.State] = new List<Contact>();
+            }
+            stateToContacts[newContact.State].Add(newContact);
+
             Console.WriteLine("Contact added successfully!");
         }
+
         public void DisplayContacts()
         {
             if (currentAddressBook == null)
@@ -131,27 +147,27 @@ namespace AddressBookSystem
             }
         }
 
-     
-        public void SearchByCityOrState(string city, string state)
+        public void ViewPersonsByCityOrState()
         {
-            var results = addressBooks
-                .SelectMany(book => book.Value, (book, contact) => new { BookName = book.Key, Contact = contact })
-                .Where(entry =>
-                    (!string.IsNullOrEmpty(city) && entry.Contact.City.Equals(city, StringComparison.OrdinalIgnoreCase)) ||
-                    (!string.IsNullOrEmpty(state) && entry.Contact.State.Equals(state, StringComparison.OrdinalIgnoreCase))
-                );
+            Console.Write("Enter City or State to search for persons: ");
+            string searchInput = Console.ReadLine();
 
-            if (results.Any())
+            List<Contact> contactsInCity = cityToContacts.ContainsKey(searchInput) ? cityToContacts[searchInput] : new List<Contact>();
+            List<Contact> contactsInState = stateToContacts.ContainsKey(searchInput) ? stateToContacts[searchInput] : new List<Contact>();
+
+            HashSet<Contact> uniqueContacts = new HashSet<Contact>(contactsInCity.Concat(contactsInState));
+
+            if (uniqueContacts.Count == 0)
             {
-             
-                foreach (var entry in results)
-                {
-                    Console.WriteLine($"[{entry.BookName}] {entry.Contact}");
-                }
+                Console.WriteLine($"No persons found in City/State: {searchInput}");
             }
             else
             {
-                Console.WriteLine("No contacts found in the given city or state.");
+                Console.WriteLine($"Persons found in City/State '{searchInput}':");
+                foreach (var contact in uniqueContacts)
+                {
+                    Console.WriteLine(contact);
+                }
             }
         }
     }

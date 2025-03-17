@@ -203,5 +203,59 @@ namespace AddressBookSystem
                 Console.WriteLine($"{entry.Key}: {entry.Value}");
             }
         }
+        public void SortContactsByCity()
+        {
+            if (currentAddressBook == null)
+            {
+                Console.WriteLine("No Address Book selected! Please select an Address Book first.");
+                return;
+            }
+
+            if (addressBooks[currentAddressBook].Count == 0)
+            {
+                Console.WriteLine("No contacts found to sort.");
+                return;
+            }
+
+            addressBooks[currentAddressBook].Sort((c1, c2) => c1.City.CompareTo(c2.City));
+            Console.WriteLine("Contacts sorted alphabetically by City.");
+        }
+
+        public void SortContactsByState()
+        {
+            if (currentAddressBook == null)
+            {
+                Console.WriteLine("No Address Book selected! Please select an Address Book first.");
+                return;
+            }
+
+            if (addressBooks[currentAddressBook].Count == 0)
+            {
+                Console.WriteLine("No contacts found to sort.");
+                return;
+            }
+
+            addressBooks[currentAddressBook].Sort((c1, c2) => c1.State.CompareTo(c2.State));
+            Console.WriteLine("Contacts sorted alphabetically by State.");
+        }
+
+        public void SortContactsByZip()
+        {
+            if (currentAddressBook == null)
+            {
+                Console.WriteLine("No Address Book selected! Please select an Address Book first.");
+                return;
+            }
+
+            if (addressBooks[currentAddressBook].Count == 0)
+            {
+                Console.WriteLine("No contacts found to sort.");
+                return;
+            }
+
+            addressBooks[currentAddressBook].Sort((c1, c2) => c1.Zip.CompareTo(c2.Zip));
+            Console.WriteLine("Contacts sorted by Zip Code.");
+        }
+
     }
 }

@@ -21,8 +21,12 @@ namespace AddressBookSystem
                 Console.WriteLine("7. Count Contacts by City");
                 Console.WriteLine("8. Count Contacts by State");
                 Console.WriteLine("9. Sort Contacts Alphabetically");
+                Console.WriteLine("10. Sort Contacts by City");
+                Console.WriteLine("11. Sort Contacts by State");
+                Console.WriteLine("12. Sort Contacts by Zip Code");
 
-                Console.WriteLine("10. Exit");
+
+                Console.WriteLine("13. Exit");
                 Console.Write("Enter your choice: ");
 
                 string choice = Console.ReadLine();
@@ -63,8 +67,18 @@ namespace AddressBookSystem
                     case "9":
                         addressBookSystem.SortContactsByName();
                         break;
-
                     case "10":
+                        addressBookSystem.SortContactsByCity();
+                        break;
+                    case "11":
+                        addressBookSystem.SortContactsByState();
+                        break;
+                    case "12":
+                        addressBookSystem.SortContactsByZip();
+                        break;
+
+
+                    case "13":
                         exit = true;
                         Console.WriteLine("Exiting Address Book System.");
                         break;

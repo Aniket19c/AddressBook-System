@@ -20,7 +20,9 @@ namespace AddressBookSystem
                 Console.WriteLine("6. View Contacts by State");
                 Console.WriteLine("7. Count Contacts by City");
                 Console.WriteLine("8. Count Contacts by State");
-                Console.WriteLine("9. Exit");
+                Console.WriteLine("9. Sort Contacts Alphabetically");
+
+                Console.WriteLine("10. Exit");
                 Console.Write("Enter your choice: ");
 
                 string choice = Console.ReadLine();
@@ -59,6 +61,10 @@ namespace AddressBookSystem
                         addressBookSystem.CountContactsByState();
                         break;
                     case "9":
+                        addressBookSystem.SortContactsByName();
+                        break;
+
+                    case "10":
                         exit = true;
                         Console.WriteLine("Exiting Address Book System.");
                         break;

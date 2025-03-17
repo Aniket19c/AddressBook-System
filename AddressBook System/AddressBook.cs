@@ -154,6 +154,30 @@ namespace AddressBookSystem
             }
         }
 
+        public void SortContactsByName()
+        {
+            if (currentAddressBook == null)
+            {
+                Console.WriteLine("No Address Book selected! Please select an Address Book first.");
+                return;
+            }
+
+            if (addressBooks[currentAddressBook].Count == 0)
+            {
+                Console.WriteLine("No contacts found to sort.");
+                return;
+            }
+
+            addressBooks[currentAddressBook].Sort((c1, c2) =>
+            {
+                int firstNameComparison = c1.FirstName.CompareTo(c2.FirstName);
+                return firstNameComparison != 0 ? firstNameComparison : c1.LastName.CompareTo(c2.LastName);
+            });
+
+            Console.WriteLine("Contacts sorted alphabetically by name.");
+        }
+
+
         public void CountContactsByCity()
         {
             var cityCounts = addressBooks.Values.SelectMany(contactsList => contactsList)

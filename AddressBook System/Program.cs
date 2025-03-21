@@ -76,8 +76,6 @@ namespace AddressBookSystem
                     case "12":
                         addressBookSystem.SortContactsByZip();
                         break;
-
-
                     case "13":
                         exit = true;
                         Console.WriteLine("Exiting Address Book System.");

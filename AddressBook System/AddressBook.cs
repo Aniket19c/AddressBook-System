@@ -11,15 +11,13 @@ namespace AddressBookSystem
 
         public void AddAddressBook(string name)
         {
-            if (!addressBooks.ContainsKey(name))
+            if (addressBooks.ContainsKey(name))
             {
-                addressBooks[name] = new List<Contact>();
-                Console.WriteLine($"Address Book '{name}' created successfully!");
+                throw new AddressBookAlreadyExistsException($"An Address Book with the name '{name}' already exists.");
             }
-            else
-            {
-                Console.WriteLine("An Address Book with this name already exists!");
-            }
+
+            addressBooks[name] = new List<Contact>();
+            Console.WriteLine($"Address Book '{name}' created successfully!");
         }
 
         public void SelectAddressBook(string name)

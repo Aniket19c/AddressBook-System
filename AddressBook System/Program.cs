@@ -7,6 +7,10 @@ namespace AddressBookSystem
         static void Main(string[] args)
         {
             AddressBook addressBookSystem = new AddressBook();
+            
+                addressBookSystem.AddAddressBook("Personal");
+            
+            
             bool exit = false;
 
             while (!exit)
@@ -33,10 +37,19 @@ namespace AddressBookSystem
                 switch (choice)
                 {
                     case "1":
-                        Console.Write("Enter Address Book Name: ");
-                        string bookName = Console.ReadLine();
-                        addressBookSystem.AddAddressBook(bookName);
+                        Console.Write("Enter the Address Book name: ");
+                        string name = Console.ReadLine();
+
+                        try
+                        {
+                            addressBookSystem.AddAddressBook(name);
+                        }
+                        catch (AddressBookAlreadyExistsException ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
                         break;
+
                     case "2":
                         Console.Write("Enter Address Book Name to select: ");
                         string selectBook = Console.ReadLine();
